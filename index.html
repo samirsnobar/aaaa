@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">M&amp;S — لوحة إدارة القائمة | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Cairo"', '"Tajawal"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            obsidian: '#0b0b0d',
+            charcoal: '#131317',
+            charcoalSoft: '#19191f',
+            crimsonDeep: '#5e0d14',
+            crimsonRich: '#8b151e',
+            crimsonBright: '#b91c28',
+            ivory: '#f5f3ef',
+            ash: '#a39e98',
+            lineDark: 'rgba(245, 243, 239, 0.11)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root,
+    :root[data-theme="dark"] {
+      --ground-obsidian: #0b0b0d;
+      --surface-charcoal: #131317;
+      --surface-soft: #19191f;
+      --text-ivory: #f5f3ef;
+      --text-ash: #a39e98;
+      --accent-crimson: #c92a37;
+      --border-hairline: rgba(245, 243, 239, 0.11);
+      --header-bg: rgba(11, 11, 13, 0.9);
+      --toast-bg: #18181d;
+      --page-bg-image:
+        radial-gradient(circle at 86% 0%, rgba(139, 21, 30, 0.18), transparent 44%),
+        radial-gradient(circle at 12% 18%, rgba(185, 28, 40, 0.08), transparent 36%),
+        linear-gradient(180deg, #0b0b0d 0%, #0e0e11 100%);
+      --card-surface: linear-gradient(180deg, #15151a 0%, #111115 100%);
+      --pill-bg: #18181e;
+      --pill-text: #d6d1ca;
+      --pill-hover-bg: #22222a;
+      --pill-hover-text: #f5f3ef;
+      --btn-crimson-grad: linear-gradient(135deg, #991620 0%, #730e16 55%, #4d080e 100%);
+      --btn-crimson-hover: linear-gradient(135deg, #b51d29 0%, #86121b 60%, #5c0b12 100%);
+      --btn-crimson-shadow: 0 6px 18px rgba(139, 21, 30, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      --btn-crimson-hover-shadow: 0 8px 22px rgba(185, 28, 40, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    :root[data-theme="light"] {
+      --ground-obsidian: #f7f4ef;
+      --surface-charcoal: #ffffff;
+      --surface-soft: #f1ece4;
+      --text-ivory: #161414;
+      --text-ash: #5f5955;
+      --accent-crimson: #9e1621;
+      --border-hairline: rgba(22, 20, 20, 0.12);
+      --header-bg: rgba(247, 244, 239, 0.92);
+      --toast-bg: #18181d;
+      --page-bg-image:
+        radial-gradient(circle at 88% 0%, rgba(158, 22, 33, 0.08), transparent 45%),
+        radial-gradient(circle at 10% 15%, rgba(22, 20, 20, 0.04), transparent 38%),
+        linear-gradient(180deg, #f7f4ef 0%, #f3efe8 100%);
+      --card-surface: linear-gradient(180deg, #ffffff 0%, #fbf9f5 100%);
+      --pill-bg: #f1ece4;
+      --pill-text: #2c2827;
+      --pill-hover-bg: #e7e0d5;
+      --pill-hover-text: #161414;
+      --btn-crimson-grad: linear-gradient(135deg, #a81824 0%, #83111a 55%, #5f0b12 100%);
+      --btn-crimson-hover: linear-gradient(135deg, #be1e2b 0%, #96141f 60%, #700e16 100%);
+      --btn-crimson-shadow: 0 6px 16px rgba(158, 22, 33, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      --btn-crimson-hover-shadow: 0 8px 20px rgba(158, 22, 33, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    }
+
+    body {
+      background-color: var(--ground-obsidian);
+      color: var(--text-ivory);
+      background-image: var(--page-bg-image);
+      min-height: 100vh;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .theme-header {
+      background-color: var(--header-bg);
+      border-color: var(--border-hairline);
+    }
+
+    .theme-surface-card {
+      background-color: var(--surface-soft);
+      border-color: var(--border-hairline);
+    }
+
+    .theme-hairline-border {
+      border-color: var(--border-hairline);
+    }
+
+    .theme-muted-text {
+      color: var(--text-ash);
+    }
+
+    .theme-accent-text {
+      color: var(--accent-crimson);
+    }
+
+    .editorial-surface {
+      background: var(--card-surface);
+      border: 1px solid var(--border-hairline);
+      transition: border-color 0.22s ease, background 0.25s ease;
+    }
+
+    .editorial-surface:hover {
+      border-color: rgba(185, 28, 40, 0.38);
+    }
+
+    .metallic-crimson-btn {
+      background: var(--btn-crimson-grad);
+      color: #f5f3ef;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--btn-crimson-shadow);
+      transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .metallic-crimson-btn:hover {
+      background: var(--btn-crimson-hover);
+      box-shadow: var(--btn-crimson-hover-shadow);
+      transform: translateY(-1px);
+    }
+
+    .metallic-crimson-btn:active {
+      transform: translateY(0);
+    }
+
+    .theme-pill-btn {
+      background-color: var(--pill-bg);
+      color: var(--pill-text);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .theme-pill-btn:hover {
+      background-color: var(--pill-hover-bg);
+      color: var(--pill-hover-text);
+    }
+  </style>
+</head>
+<body class="pb-16 selection:bg-crimsonRich selection:text-ivory">
+
+  <header class="sticky top-0 z-30 backdrop-blur-md border-b theme-header transition-colors duration-250">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-11 h-11 rounded-xl theme-surface-card border border-crimsonRich/45 flex items-center justify-center shrink-0">
+          <span class="font-extrabold text-sm tracking-widest">M&amp;S</span>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2.5">
+            <h1 id="headerTitle" class="text-base sm:text-xl font-extrabold truncate">
+              لوحة إدارة منيو M&amp;S
+            </h1>
+            <span id="firebaseBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-md border theme-hairline-border theme-accent-text shrink-0">
+              وضع محلي
+            </span>
+          </div>
+          <p id="headerSubtitle" class="text-xs theme-muted-text truncate">
+            إدارة كاملة للأصناف، الأقسام، هوية المتجر، والمزامنة مع Firebase Firestore
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button
+          id="langToggleBtn"
+          type="button"
+          onclick="toggleLanguage()"
+          class="theme-pill-btn px-3 py-2 rounded-xl text-xs font-extrabold cursor-pointer transition"
+        >
+          EN
+        </button>
+
+        <button
+          id="themeToggleBtn"
+          type="button"
+          onclick="toggleTheme()"
+          class="theme-pill-btn w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center cursor-pointer transition"
+        >
+          <span id="themeIcon" class="text-sm sm:text-base leading-none" aria-hidden="true">☀</span>
+        </button>
+
+        <button
+          id="signOutBtn"
+          type="button"
+          onclick="handleAdminSignOut()"
+          class="hidden theme-pill-btn px-3 py-2 rounded-xl text-xs font-bold cursor-pointer transition"
+        >
+          تسجيل الخروج
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 space-y-8">
+
+    <section id="loginGateSection" class="max-w-xl mx-auto editorial-surface rounded-2xl p-6 sm:p-8 space-y-5">
+      <div class="space-y-1.5">
+        <span id="loginEyebrow" class="text-xs font-bold theme-accent-text block">
+          صلاحية إدارة M&amp;S
+        </span>
+        <h2 id="loginHeading" class="text-2xl font-extrabold">
+          تسجيل دخول الأدمن
+        </h2>
+        <p id="loginDesc" class="text-xs sm:text-sm theme-muted-text leading-relaxed">
+          سجّل الدخول بحساب الأدمن في Firebase Authentication للتحكم الكامل بقائمة الطعام والأقسام والإعدادات.
+        </p>
+      </div>
+
+      <div id="loginStatusBanner" class="rounded-xl p-3.5 text-xs theme-surface-card border theme-muted-text leading-relaxed">
+      </div>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label id="lblLoginEmail" for="loginEmail" class="block text-xs font-bold mb-1.5">
+            البريد الإلكتروني
+          </label>
+          <input
+            id="loginEmail"
+            type="email"
+            required
+            placeholder="admin@ms-shawarma.com"
+            class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2.5 text-sm"
+          />
+        </div>
+
+        <div>
+          <label id="lblLoginPassword" for="loginPassword" class="block text-xs font-bold mb-1.5">
+            كلمة المرور
+          </label>
+          <input
+            id="loginPassword"
+            type="password"
+            required
+            placeholder="••••••••"
+            class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2.5 text-sm"
+          />
+        </div>
+
+        <p id="loginErrorText" class="text-xs font-bold text-[#dc2626] hidden"></p>
+
+        <div class="flex flex-wrap items-center gap-3 pt-1">
+          <button
+            id="btnLoginSubmit"
+            type="submit"
+            class="flex-1 metallic-crimson-btn py-2.5 px-5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+          >
+            دخول لوحة الإدارة
+          </button>
+          <button
+            id="btnLocalDemo"
+            type="button"
+            onclick="enterLocalAdminSession()"
+            class="theme-pill-btn py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+          >
+            دخول محلي للمعاينة
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section id="adminWorkspaceSection" class="hidden space-y-7">
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="editorial-surface rounded-2xl p-4">
+          <span id="statItemsLabel" class="text-xs theme-muted-text block">إجمالي الأصناف</span>
+          <span id="statItemsCount" class="text-2xl font-extrabold tabular-nums mt-1 block">0</span>
+        </div>
+        <div class="editorial-surface rounded-2xl p-4">
+          <span id="statAvailableLabel" class="text-xs theme-muted-text block">الأصناف المتوفرة</span>
+          <span id="statAvailableCount" class="text-2xl font-extrabold tabular-nums mt-1 block theme-accent-text">0</span>
+        </div>
+        <div class="editorial-surface rounded-2xl p-4">
+          <span id="statCategoriesLabel" class="text-xs theme-muted-text block">عدد الأقسام</span>
+          <span id="statCategoriesCount" class="text-2xl font-extrabold tabular-nums mt-1 block">0</span>
+        </div>
+        <div class="editorial-surface rounded-2xl p-4">
+          <span id="statCurrencyLabel" class="text-xs theme-muted-text block">العملة المعتمدة</span>
+          <span id="statCurrencyValue" class="text-2xl font-extrabold mt-1 block">ل.س</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 border-b theme-hairline-border pb-4">
+        <button
+          id="tabBtnItems"
+          type="button"
+          onclick="switchAdminSection('items')"
+          class="metallic-crimson-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+        >
+          إدارة المنتجات والأصناف
+        </button>
+        <button
+          id="tabBtnCategories"
+          type="button"
+          onclick="switchAdminSection('categories')"
+          class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+        >
+          إدارة الأقسام
+        </button>
+        <button
+          id="tabBtnBrand"
+          type="button"
+          onclick="switchAdminSection('brand')"
+          class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+        >
+          هوية المتجر والإعدادات
+        </button>
+        <button
+          id="tabBtnFirebase"
+          type="button"
+          onclick="switchAdminSection('firebase')"
+          class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+        >
+          إعدادات Firebase والمزامنة
+        </button>
+      </div>
+
+      <div id="sectionItems" class="space-y-6">
+        <div class="editorial-surface rounded-2xl p-5 sm:p-6 space-y-5">
+          <div class="flex items-center justify-between gap-3 border-b theme-hairline-border pb-3.5">
+            <h2 id="productFormTitle" class="text-base sm:text-lg font-extrabold">
+              إضافة منتج جديد
+            </h2>
+            <button
+              id="cancelProductEditBtn"
+              type="button"
+              onclick="resetProductForm()"
+              class="hidden theme-pill-btn px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer"
+            >
+              إلغاء التعديل
+            </button>
+          </div>
+
+          <form id="productEditorForm" onsubmit="handleSaveProduct(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <input type="hidden" id="editingProductId" value="" />
+
+            <div>
+              <label id="lblProdNameAr" for="prodNameAr" class="block text-xs font-bold mb-1">اسم المنتج (عربي)</label>
+              <input id="prodNameAr" type="text" required placeholder="مثلاً: صحن شاورما عربي دبل" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label id="lblProdNameEn" for="prodNameEn" class="block text-xs font-bold mb-1">اسم المنتج (إنجليزي)</label>
+              <input id="prodNameEn" type="text" required placeholder="e.g. Double Arabic Shawarma Platter" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label id="lblProdPrice" for="prodPrice" class="block text-xs font-bold mb-1">السعر (ل.س)</label>
+              <input id="prodPrice" type="number" min="0" step="100" required placeholder="68000" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm tabular-nums" />
+            </div>
+
+            <div>
+              <label id="lblProdCategory" for="prodCategory" class="block text-xs font-bold mb-1">القسم</label>
+              <select id="prodCategory" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm"></select>
+            </div>
+
+            <div>
+              <label id="lblProdBadgeAr" for="prodBadgeAr" class="block text-xs font-bold mb-1">شارة / وسم (عربي)</label>
+              <input id="prodBadgeAr" type="text" placeholder="اختيار اليوم / مقرمش" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label id="lblProdBadgeEn" for="prodBadgeEn" class="block text-xs font-bold mb-1">شارة / وسم (إنجليزي)</label>
+              <input id="prodBadgeEn" type="text" placeholder="Today's Pick / Crispy" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+
+            <div class="md:col-span-2">
+              <label id="lblProdImage" for="prodImageUrl" class="block text-xs font-bold mb-1">رابط صورة المنتج (Image URL)</label>
+              <input id="prodImageUrl" type="url" placeholder="https://images.unsplash.com/..." class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+
+            <div class="flex flex-col justify-end gap-2">
+              <label class="inline-flex items-center gap-2 text-xs font-bold cursor-pointer">
+                <input id="prodAvailable" type="checkbox" checked class="w-4 h-4 accent-[#b91c28]" />
+                <span id="lblProdAvailable">متوفر للطلب حالياً</span>
+              </label>
+              <label class="inline-flex items-center gap-2 text-xs font-bold cursor-pointer">
+                <input id="prodFeatured" type="checkbox" class="w-4 h-4 accent-[#b91c28]" />
+                <span id="lblProdFeatured">عرض كطبق مميز في الواجهة الرئيسية</span>
+              </label>
+            </div>
+
+            <div>
+              <label id="lblProdDescAr" for="prodDescAr" class="block text-xs font-bold mb-1">الوصف بالعربية</label>
+              <textarea id="prodDescAr" rows="2" required placeholder="المكونات وطريقة التحضير بالعربية..." class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm resize-none"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+              <label id="lblProdDescEn" for="prodDescEn" class="block text-xs font-bold mb-1">الوصف بالإنجليزية</label>
+              <textarea id="prodDescEn" rows="2" required placeholder="Ingredients and preparation in English..." class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm resize-none"></textarea>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-3 flex justify-end pt-1">
+              <button id="btnSaveProduct" type="submit" class="metallic-crimson-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+                حفظ المنتج
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="editorial-surface rounded-2xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="flex-1">
+            <input
+              id="adminSearchInput"
+              type="search"
+              oninput="renderProductsAdminList()"
+              placeholder="ابحث باسم المنتج بالعربية أو الإنجليزية..."
+              class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-xs sm:text-sm"
+            />
+          </div>
+          <div class="sm:w-56">
+            <select
+              id="adminFilterCategorySelect"
+              onchange="renderProductsAdminList()"
+              class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-xs sm:text-sm"
+            ></select>
+          </div>
+        </div>
+
+        <div id="adminProductsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+
+      <div id="sectionCategories" class="hidden space-y-6">
+        <div class="editorial-surface rounded-2xl p-5 sm:p-6 space-y-4">
+          <h2 id="catFormHeading" class="text-base sm:text-lg font-extrabold border-b theme-hairline-border pb-3">
+            إضافة قسم جديد
+          </h2>
+          <form id="addCategoryForm" onsubmit="handleAddCategory(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div>
+              <label id="lblNewCatAr" for="newCatAr" class="block text-xs font-bold mb-1">اسم القسم (عربي)</label>
+              <input id="newCatAr" type="text" required placeholder="مثلاً: مقبلات باردة" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblNewCatEn" for="newCatEn" class="block text-xs font-bold mb-1">اسم القسم (إنجليزي)</label>
+              <input id="newCatEn" type="text" required placeholder="e.g. Cold Appetizers" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblNewCatSlug" for="newCatSlug" class="block text-xs font-bold mb-1">المعرّف (Slug / Key)</label>
+              <input id="newCatSlug" type="text" placeholder="cold-appetizers" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div class="flex items-end">
+              <button id="btnAddCategory" type="submit" class="w-full metallic-crimson-btn py-2 px-4 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+                إضافة قسم
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="adminCategoriesList" class="space-y-3"></div>
+      </div>
+
+      <div id="sectionBrand" class="hidden">
+        <form id="brandSettingsForm" onsubmit="handleSaveBrandSettings(event)" class="editorial-surface rounded-2xl p-5 sm:p-6 space-y-5">
+          <h2 id="brandFormHeading" class="text-base sm:text-lg font-extrabold border-b theme-hairline-border pb-3">
+            إعدادات هوية M&amp;S والعملة والواتساب
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label id="lblBrandNameAr" for="brandNameAr" class="block text-xs font-bold mb-1">اسم المطعم (عربي)</label>
+              <input id="brandNameAr" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblBrandNameEn" for="brandNameEn" class="block text-xs font-bold mb-1">اسم المطعم (إنجليزي)</label>
+              <input id="brandNameEn" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblBrandTaglineAr" for="brandTaglineAr" class="block text-xs font-bold mb-1">العبارة التعريفية (عربي)</label>
+              <input id="brandTaglineAr" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblBrandTaglineEn" for="brandTaglineEn" class="block text-xs font-bold mb-1">العبارة التعريفية (إنجليزي)</label>
+              <input id="brandTaglineEn" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblCurrencyAr" for="currencyAr" class="block text-xs font-bold mb-1">رمز العملة (عربي)</label>
+              <input id="currencyAr" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label id="lblCurrencyEn" for="currencyEn" class="block text-xs font-bold mb-1">رمز العملة (إنجليزي)</label>
+              <input id="currencyEn" type="text" required class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm" />
+            </div>
+            <div class="md:col-span-2">
+              <label id="lblWhatsappNumber" for="whatsappNumberInput" class="block text-xs font-bold mb-1">رقم واتساب الطلبات الافتراضي (مع الرمز الدولي)</label>
+              <input id="whatsappNumberInput" type="text" required dir="ltr" placeholder="963940242745" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3.5 py-2 text-sm font-mono" />
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button id="btnSaveBrand" type="submit" class="metallic-crimson-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+              حفظ إعدادات المتجر
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="sectionFirebase" class="hidden space-y-6">
+        <form id="firebaseConfigForm" onsubmit="handleSaveFirebaseConfig(event)" class="editorial-surface rounded-2xl p-5 sm:p-6 space-y-4">
+          <div class="border-b theme-hairline-border pb-3">
+            <h2 id="fbConfigTitle" class="text-base sm:text-lg font-extrabold">
+              مفاتيح مشروع Firebase المشتركة مع واجهة المنيو
+            </h2>
+            <p id="fbConfigDesc" class="text-xs sm:text-sm theme-muted-text mt-1">
+              يتم حفظ هذه المفاتيح في المتصفح ليقرأها كل من admin.html و index.html من نفس قاعدة بيانات Firestore.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgApiKey">apiKey</label>
+              <input id="cfgApiKey" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgAuthDomain">authDomain</label>
+              <input id="cfgAuthDomain" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgProjectId">projectId</label>
+              <input id="cfgProjectId" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgStorageBucket">storageBucket</label>
+              <input id="cfgStorageBucket" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgMessagingSenderId">messagingSenderId</label>
+              <input id="cfgMessagingSenderId" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold mb-1" for="cfgAppId">appId</label>
+              <input id="cfgAppId" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold mb-1" for="cfgMeasurementId">measurementId</label>
+              <input id="cfgMeasurementId" type="text" class="w-full rounded-xl theme-surface-card border focus:border-[#b91c28] focus:outline-none px-3 py-2 text-sm font-mono" />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button
+                id="btnSeedDefaults"
+                type="button"
+                onclick="handleSeedDefaultData()"
+                class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+              >
+                تهيئة بيانات M&amp;S الافتراضية في Firestore
+              </button>
+              <button
+                id="btnExportJson"
+                type="button"
+                onclick="handleExportJsonBackup()"
+                class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer"
+              >
+                تصدير نسخة JSON
+              </button>
+              <label class="theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+                <span id="lblImportJson">استيراد نسخة JSON</span>
+                <input type="file" accept=".json,application/json" onchange="handleImportJsonBackup(event)" class="hidden" />
+              </label>
+            </div>
+
+            <button id="btnSaveFirebase" type="submit" class="metallic-crimson-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+              حفظ وربط Firebase
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </section>
+
+  </main>
+
+  <div
+    id="adminToast"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none opacity-0 translate-y-2 transition-all duration-200"
+  >
+    <div style="background-color: var(--toast-bg); border-color: rgba(185, 28, 40, 0.55);" class="border px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-2xl flex items-center gap-2 text-[#f5f3ef]">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#dc2626]"></span>
+      <span id="adminToastText">تم الحفظ</span>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_LANG_KEY = 'ms_admin_lang_v1';
+    const ADMIN_THEME_KEY = 'ms_admin_theme_v1';
+    const LOCAL_SESSION_KEY = 'ms_admin_local_session_v1';
+
+    const UNIFIED_FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyBW7J44fwJvC5AyiZOGOj8P97FIkTzMWYw',
+      authDomain: 'm-and-s-a17dd.firebaseapp.com',
+      projectId: 'm-and-s-a17dd',
+      storageBucket: 'm-and-s-a17dd.firebasestorage.app',
+      messagingSenderId: '660263959688',
+      appId: '1:660263959688:web:a54532b7511a771fd1333d',
+      measurementId: 'G-MDFR7JK8KZ'
+    };
+
+    const ADMIN_I18N = {
+      ar: {
+        pageTitle: 'M&S — لوحة إدارة القائمة | Admin Dashboard',
+        headerTitle: 'لوحة إدارة منيو M&S',
+        headerSubtitle: 'إدارة كاملة للأصناف، الأقسام، هوية المتجر، والمزامنة مع Firebase Firestore',
+        fbConnected: 'متصل بـ Firebase',
+        fbLocal: 'وضع محلي',
+        signOut: 'تسجيل الخروج',
+        loginEyebrow: 'صلاحية إدارة M&S',
+        loginHeading: 'تسجيل دخول الأدمن',
+        loginDesc: 'سجّل الدخول بحساب الأدمن في Firebase Authentication للتحكم الكامل بقائمة الطعام والأقسام والإعدادات.',
+        statusFbReady: 'بيانات مشروع Firebase (m-and-s-a17dd) مهيأة. سجّل الدخول بحسابك أو استخدم وضع المعاينة المحلي.',
+        statusFbMissing: 'لا توجد مفاتيح Firebase مضبوطة؛ يمكنك استخدام وضع المعاينة المحلي أو ضبط المفاتيح.',
+        lblEmail: 'البريد الإلكتروني',
+        lblPassword: 'كلمة المرور',
+        btnLogin: 'دخول لوحة الإدارة',
+        btnLocalDemo: 'دخول محلي للمعاينة',
+        loginErrAuth: 'تعذر تسجيل الدخول. تأكد من صحة البريد الإلكتروني وكلمة المرور وتفعيل Email/Password في Firebase.',
+        statItems: 'إجمالي الأصناف',
+        statAvailable: 'الأصناف المتوفرة',
+        statCategories: 'عدد الأقسام',
+        statCurrency: 'العملة المعتمدة',
+        tabItems: 'إدارة المنتجات والأصناف',
+        tabCategories: 'إدارة الأقسام',
+        tabBrand: 'هوية المتجر والإعدادات',
+        tabFirebase: 'إعدادات Firebase والمزامنة',
+        formAddTitle: 'إضافة منتج جديد',
+        formEditTitle: 'تعديل المنتج الحالي',
+        cancelEdit: 'إلغاء التعديل',
+        lblNameAr: 'اسم المنتج (عربي)',
+        lblNameEn: 'اسم المنتج (إنجليزي)',
+        lblPrice: 'السعر (ل.س)',
+        lblCategory: 'القسم',
+        lblBadgeAr: 'شارة / وسم (عربي)',
+        lblBadgeEn: 'شارة / وسم (إنجليزي)',
+        lblImage: 'رابط صورة المنتج (Image URL)',
+        lblAvailable: 'متوفر للطلب حالياً',
+        lblFeatured: 'عرض كطبق مميز في الواجهة الرئيسية',
+        lblDescAr: 'الوصف بالعربية',
+        lblDescEn: 'الوصف بالإنجليزية',
+        btnSaveProduct: 'حفظ المنتج',
+        searchPlaceholder: 'ابحث باسم المنتج بالعربية أو الإنجليزية...',
+        allCategories: 'كل الأقسام',
+        availableBadge: 'متوفر',
+        unavailableBadge: 'غير متوفر',
+        featuredBadge: 'مميز',
+        btnEdit: 'تعديل',
+        btnDuplicate: 'نسخ',
+        btnToggleAvail: 'تبديل التوفر',
+        btnDelete: 'حذف',
+        catFormHeading: 'إضافة قسم جديد',
+        lblNewCatAr: 'اسم القسم (عربي)',
+        lblNewCatEn: 'اسم القسم (إنجليزي)',
+        lblNewCatSlug: 'المعرّف (Slug / Key)',
+        btnAddCategory: 'إضافة قسم',
+        btnMoveUp: 'للأعلى',
+        btnMoveDown: 'للأسفل',
+        brandFormHeading: 'إعدادات هوية M&S والعملة والواتساب',
+        lblBrandNameAr: 'اسم المطعم (عربي)',
+        lblBrandNameEn: 'اسم المطعم (إنجليزي)',
+        lblTaglineAr: 'العبارة التعريفية (عربي)',
+        lblTaglineEn: 'العبارة التعريفية (إنجليزي)',
+        lblCurrencyAr: 'رمز العملة (عربي)',
+        lblCurrencyEn: 'رمز العملة (إنجليزي)',
+        lblWhatsapp: 'رقم واتساب الطلبات الافتراضي (مع الرمز الدولي)',
+        btnSaveBrand: 'حفظ إعدادات المتجر',
+        fbConfigTitle: 'مفاتيح مشروع Firebase المشتركة مع واجهة المنيو',
+        fbConfigDesc: 'يتم حفظ هذه المفاتيح في المتصفح ليقرأها كل من admin.html و index.html من نفس قاعدة بيانات Firestore.',
+        btnSeedDefaults: 'تهيئة بيانات M&S الافتراضية في Firestore',
+        btnExportJson: 'تصدير نسخة JSON',
+        lblImportJson: 'استيراد نسخة JSON',
+        btnSaveFirebase: 'حفظ وربط Firebase',
+        toastSavedProduct: 'تم حفظ المنتج',
+        toastDeletedProduct: 'تم حذف المنتج',
+        toastDuplicated: 'تم نسخ المنتج',
+        toastAddedCat: 'تمت إضافة القسم',
+        toastDeletedCat: 'تم حذف القسم',
+        toastBrandSaved: 'تم حفظ إعدادات المتجر',
+        toastFbSaved: 'تم حفظ مفاتيح Firebase',
+        toastSeedDone: 'تمت تهيئة بيانات M&S في Firestore',
+        toastSeedNoFb: 'يرجى تسجيل الدخول في Firebase أولاً لرفع البيانات لـ Firestore',
+        toastExportDone: 'تم تصدير ملف النسخة الاحتياطية',
+        toastImportDone: 'تم استيراد بيانات JSON بنجاح'
+      },
+      en: {
+        pageTitle: 'M&S — Menu Admin Dashboard',
+        headerTitle: 'M&S Menu Admin Panel',
+        headerSubtitle: 'Full management for dishes, categories, store identity, and Firebase Firestore sync',
+        fbConnected: 'Firebase Connected',
+        fbLocal: 'Local Mode',
+        signOut: 'Sign Out',
+        loginEyebrow: 'M&S Administration Access',
+        loginHeading: 'Admin Sign In',
+        loginDesc: 'Sign in with your Firebase Authentication admin account to manage dishes, categories, and settings.',
+        statusFbReady: 'Firebase project (m-and-s-a17dd) is configured. Sign in with your account or use local preview mode.',
+        statusFbMissing: 'No Firebase keys configured; you can use local preview mode or configure keys.',
+        lblEmail: 'Email Address',
+        lblPassword: 'Password',
+        btnLogin: 'Enter Admin Panel',
+        btnLocalDemo: 'Local Preview Mode',
+        loginErrAuth: 'Sign-in failed. Check your email, password, and Email/Password provider in Firebase.',
+        statItems: 'Total Items',
+        statAvailable: 'Available Items',
+        statCategories: 'Categories',
+        statCurrency: 'Currency',
+        tabItems: 'Products & Dishes',
+        tabCategories: 'Categories',
+        tabBrand: 'Brand & Settings',
+        tabFirebase: 'Firebase & Sync',
+        formAddTitle: 'Add New Dish',
+        formEditTitle: 'Edit Dish',
+        cancelEdit: 'Cancel Edit',
+        lblNameAr: 'Dish Name (Arabic)',
+        lblNameEn: 'Dish Name (English)',
+        lblPrice: 'Price (SYP)',
+        lblCategory: 'Category',
+        lblBadgeAr: 'Badge (Arabic)',
+        lblBadgeEn: 'Badge (English)',
+        lblImage: 'Image URL',
+        lblAvailable: 'Available for order',
+        lblFeatured: 'Show as Spotlight dish',
+        lblDescAr: 'Description (Arabic)',
+        lblDescEn: 'Description (English)',
+        btnSaveProduct: 'Save Dish',
+        searchPlaceholder: 'Search dish by Arabic or English name...',
+        allCategories: 'All Categories',
+        availableBadge: 'Available',
+        unavailableBadge: 'Unavailable',
+        featuredBadge: 'Featured',
+        btnEdit: 'Edit',
+        btnDuplicate: 'Duplicate',
+        btnToggleAvail: 'Toggle Availability',
+        btnDelete: 'Delete',
+        catFormHeading: 'Add New Category',
+        lblNewCatAr: 'Category Name (Arabic)',
+        lblNewCatEn: 'Category Name (English)',
+        lblNewCatSlug: 'Slug / Key',
+        btnAddCategory: 'Add Category',
+        btnMoveUp: 'Up',
+        btnMoveDown: 'Down',
+        brandFormHeading: 'M&S Identity, Currency & WhatsApp Settings',
+        lblBrandNameAr: 'Restaurant Name (Arabic)',
+        lblBrandNameEn: 'Restaurant Name (English)',
+        lblTaglineAr: 'Tagline (Arabic)',
+        lblTaglineEn: 'Tagline (English)',
+        lblCurrencyAr: 'Currency Symbol (Arabic)',
+        lblCurrencyEn: 'Currency Symbol (English)',
+        lblWhatsapp: 'Default WhatsApp Order Number (with country code)',
+        btnSaveBrand: 'Save Store Settings',
+        fbConfigTitle: 'Firebase Project Keys Shared with Customer Menu',
+        fbConfigDesc: 'Stored in browser storage so both admin.html and index.html read from the same Firestore database.',
+        btnSeedDefaults: 'Seed Default M&S Data to Firestore',
+        btnExportJson: 'Export JSON Backup',
+        lblImportJson: 'Import JSON Backup',
+        btnSaveFirebase: 'Save & Connect Firebase',
+        toastSavedProduct: 'Dish saved',
+        toastDeletedProduct: 'Dish deleted',
+        toastDuplicated: 'Dish duplicated',
+        toastAddedCat: 'Category added',
+        toastDeletedCat: 'Category deleted',
+        toastBrandSaved: 'Store settings saved',
+        toastFbSaved: 'Firebase keys saved',
+        toastSeedDone: 'Default M&S data seeded to Firestore',
+        toastSeedNoFb: 'Please sign in to Firebase first to sync data to Firestore',
+        toastExportDone: 'JSON backup exported',
+        toastImportDone: 'JSON backup imported successfully'
+      }
+    };
+
+    let currentLang = localStorage.getItem(ADMIN_LANG_KEY) === 'en' ? 'en' : 'ar';
+    let currentTheme = localStorage.getItem(ADMIN_THEME_KEY) === 'light' ? 'light' : 'dark';
+    let authUser = null;
+    let localPreviewActive = localStorage.getItem(LOCAL_SESSION_KEY) === '1';
+
+    let STORE_SETTINGS = {
+      brandNameAr: 'M&S',
+      brandNameEn: 'M&S',
+      taglineAr: 'شاورما وفروج • دمشق',
+      taglineEn: 'Shawarma & Chicken • Damascus',
+      currencyAr: 'ل.س',
+      currencyEn: 'SYP',
+      whatsappNumber: '963940242745'
+    };
+
+    let CATEGORIES = [
+      { id: 'shawarma', slug: 'shawarma', nameAr: 'شاورما', nameEn: 'Shawarma', order: 1 },
+      { id: 'chicken-broasted', slug: 'chicken-broasted', nameAr: 'فروج وبروستد', nameEn: 'Chicken & Broasted', order: 2 },
+      { id: 'family-meals', slug: 'family-meals', nameAr: 'وجبات عائلية', nameEn: 'Family Meals', order: 3 },
+      { id: 'sandwiches-rockets', slug: 'sandwiches-rockets', nameAr: 'سندويش وصواريخ', nameEn: 'Sandwiches & Rockets', order: 4 },
+      { id: 'sides-sauces', slug: 'sides-sauces', nameAr: 'مقبلات وصلصات', nameEn: 'Sides & Sauces', order: 5 }
+    ];
+
+    let PRODUCTS = [
+      {
+        id: 'ms-shawarma-arabi-double',
+        nameAr: 'صحن شاورما عربي دبل',
+        nameEn: 'Double Arabic Shawarma Platter',
+        category: 'shawarma',
+        price: 68000,
+        badgeAr: 'اختيار اليوم',
+        badgeEn: "Today's Pick",
+        available: true,
+        featured: true,
+        image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=900&q=80',
+        descAr: 'شرائح شاورما دجاج متبلة ومحمّرة على السيخ، مقدمة مع ثومية كريمية ومخلل وبطاطا مقرمشة.',
+        descEn: 'Spiced rotisserie chicken shawarma sliced to order, served with garlic toum, pickles, and fries.'
+      },
+      {
+        id: 'ms-broasted-8pcs',
+        nameAr: 'بروستد 8 قطع مقرمش',
+        nameEn: '8-Piece Crispy Broasted',
+        category: 'chicken-broasted',
+        price: 115000,
+        badgeAr: 'مقرمش',
+        badgeEn: 'Crispy',
+        available: true,
+        featured: false,
+        image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=900&q=80',
+        descAr: '8 قطع فروج مقلية بضغط البخار بتتبيلة M&S الخاصة مع بطاطا وثوم وكاتشب وخبز.',
+        descEn: '8 pressure-fried chicken pieces with M&S signature seasoning, fries, garlic sauce, ketchup, and bread.'
+      }
+    ];
+
+    function tr(key) {
+      return (ADMIN_I18N[currentLang] && ADMIN_I18N[currentLang][key]) || ADMIN_I18N.ar[key] || key;
+    }
+
+    function formatPrice(amount) {
+      const num = Number(amount) || 0;
+      const currency = currentLang === 'en' ? (STORE_SETTINGS.currencyEn || 'SYP') : (STORE_SETTINGS.currencyAr || 'ل.س');
+      return `${num.toLocaleString('en-US')} ${currency}`;
+    }
+
+    function applyTheme(theme) {
+      currentTheme = theme === 'light' ? 'light' : 'dark';
+      localStorage.setItem(ADMIN_THEME_KEY, currentTheme);
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+      const iconEl = document.getElementById('themeIcon');
+      if (iconEl) iconEl.textContent = currentTheme === 'dark' ? '☀' : '☾';
+    }
+
+    function toggleTheme() {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    function applyAdminLanguage() {
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      localStorage.setItem(ADMIN_LANG_KEY, currentLang);
+
+      const langBtn = document.getElementById('langToggleBtn');
+      if (langBtn) langBtn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+      const setPlaceholder = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.placeholder = val;
+      };
+
+      setText('pageTitle', tr('pageTitle'));
+      setText('headerTitle', tr('headerTitle'));
+      setText('headerSubtitle', tr('headerSubtitle'));
+      setText('signOutBtn', tr('signOut'));
+      setText('loginEyebrow', tr('loginEyebrow'));
+      setText('loginHeading', tr('loginHeading'));
+      setText('loginDesc', tr('loginDesc'));
+      setText('lblLoginEmail', tr('lblEmail'));
+      setText('lblLoginPassword', tr('lblPassword'));
+      setText('btnLoginSubmit', tr('btnLogin'));
+      setText('btnLocalDemo', tr('btnLocalDemo'));
+      setText('statItemsLabel', tr('statItems'));
+      setText('statAvailableLabel', tr('statAvailable'));
+      setText('statCategoriesLabel', tr('statCategories'));
+      setText('statCurrencyLabel', tr('statCurrency'));
+      setText('statCurrencyValue', currentLang === 'en' ? (STORE_SETTINGS.currencyEn || 'SYP') : (STORE_SETTINGS.currencyAr || 'ل.س'));
+      setText('tabBtnItems', tr('tabItems'));
+      setText('tabBtnCategories', tr('tabCategories'));
+      setText('tabBtnBrand', tr('tabBrand'));
+      setText('tabBtnFirebase', tr('tabFirebase'));
+      setText('productFormTitle', document.getElementById('editingProductId')?.value ? tr('formEditTitle') : tr('formAddTitle'));
+      setText('cancelProductEditBtn', tr('cancelEdit'));
+      setText('lblProdNameAr', tr('lblNameAr'));
+      setText('lblProdNameEn', tr('lblNameEn'));
+      setText('lblProdPrice', tr('lblPrice'));
+      setText('lblProdCategory', tr('lblCategory'));
+      setText('lblProdBadgeAr', tr('lblBadgeAr'));
+      setText('lblProdBadgeEn', tr('lblBadgeEn'));
+      setText('lblProdImage', tr('lblImage'));
+      setText('lblProdAvailable', tr('lblAvailable'));
+      setText('lblProdFeatured', tr('lblFeatured'));
+      setText('lblProdDescAr', tr('lblDescAr'));
+      setText('lblProdDescEn', tr('lblDescEn'));
+      setText('btnSaveProduct', tr('btnSaveProduct'));
+      setPlaceholder('adminSearchInput', tr('searchPlaceholder'));
+      setText('catFormHeading', tr('catFormHeading'));
+      setText('lblNewCatAr', tr('lblNewCatAr'));
+      setText('lblNewCatEn', tr('lblNewCatEn'));
+      setText('lblNewCatSlug', tr('lblNewCatSlug'));
+      setText('btnAddCategory', tr('btnAddCategory'));
+      setText('brandFormHeading', tr('brandFormHeading'));
+      setText('lblBrandNameAr', tr('lblBrandNameAr'));
+      setText('lblBrandNameEn', tr('lblBrandNameEn'));
+      setText('lblBrandTaglineAr', tr('lblTaglineAr'));
+      setText('lblBrandTaglineEn', tr('lblTaglineEn'));
+      setText('lblCurrencyAr', tr('lblCurrencyAr'));
+      setText('lblCurrencyEn', tr('lblCurrencyEn'));
+      setText('lblWhatsappNumber', tr('lblWhatsapp'));
+      setText('btnSaveBrand', tr('btnSaveBrand'));
+      setText('fbConfigTitle', tr('fbConfigTitle'));
+      setText('fbConfigDesc', tr('fbConfigDesc'));
+      setText('btnSeedDefaults', tr('btnSeedDefaults'));
+      setText('btnExportJson', tr('btnExportJson'));
+      setText('lblImportJson', tr('lblImportJson'));
+      setText('btnSaveFirebase', tr('btnSaveFirebase'));
+
+      const connected = Boolean(window.MSAdminFirebase && window.MSAdminFirebase.isConnected());
+      setText('firebaseBadge', connected ? tr('fbConnected') : tr('fbLocal'));
+      setText('loginStatusBanner', connected ? tr('statusFbReady') : tr('statusFbMissing'));
+
+      refreshAllAdminViews();
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      applyAdminLanguage();
+    }
+
+    function showAdminToast(message) {
+      const toast = document.getElementById('adminToast');
+      const toastText = document.getElementById('adminToastText');
+      if (!toast || !toastText) return;
+      toastText.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._msAdminToastTimer);
+      window._msAdminToastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-2');
+      }, 2400);
+    }
+
+    function updateAuthView() {
+      const isAuthorized = Boolean(authUser || localPreviewActive);
+      const loginGate = document.getElementById('loginGateSection');
+      const workspace = document.getElementById('adminWorkspaceSection');
+      const signOutBtn = document.getElementById('signOutBtn');
+
+      if (loginGate) loginGate.classList.toggle('hidden', isAuthorized);
+      if (workspace) workspace.classList.toggle('hidden', !isAuthorized);
+      if (signOutBtn) signOutBtn.classList.toggle('hidden', !isAuthorized);
+
+      if (isAuthorized) {
+        populateBrandForm();
+        populateFirebaseForm();
+        refreshAllAdminViews();
+      }
+    }
+
+    function enterLocalAdminSession() {
+      localPreviewActive = true;
+      localStorage.setItem(LOCAL_SESSION_KEY, '1');
+      const errEl = document.getElementById('loginErrorText');
+      if (errEl) errEl.classList.add('hidden');
+      updateAuthView();
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errEl = document.getElementById('loginErrorText');
+      if (errEl) errEl.classList.add('hidden');
+
+      if (!window.MSAdminFirebase || !window.MSAdminFirebase.isConnected()) {
+        enterLocalAdminSession();
+        return;
+      }
+
+      try {
+        await window.MSAdminFirebase.signIn(email, password);
+        localPreviewActive = false;
+        localStorage.removeItem(LOCAL_SESSION_KEY);
+      } catch (err) {
+        const fbCode = err?.code ? ` [${err.code}]` : '';
+        if (errEl) {
+          errEl.textContent = `${tr('loginErrAuth')}${fbCode}`;
+          errEl.classList.remove('hidden');
+        }
+      }
+    }
+
+    async function handleAdminSignOut() {
+      localPreviewActive = false;
+      localStorage.removeItem(LOCAL_SESSION_KEY);
+      if (window.MSAdminFirebase && authUser) {
+        try {
+          await window.MSAdminFirebase.signOutUser();
+        } catch (e) {
+          // تجاهل
+        }
+      }
+      authUser = null;
+      updateAuthView();
+    }
+
+    function switchAdminSection(sectionName) {
+      const sections = {
+        items: 'sectionItems',
+        categories: 'sectionCategories',
+        brand: 'sectionBrand',
+        firebase: 'sectionFirebase'
+      };
+      const buttons = {
+        items: 'tabBtnItems',
+        categories: 'tabBtnCategories',
+        brand: 'tabBtnBrand',
+        firebase: 'tabBtnFirebase'
+      };
+
+      Object.keys(sections).forEach((key) => {
+        const el = document.getElementById(sections[key]);
+        const btn = document.getElementById(buttons[key]);
+        if (el) el.classList.toggle('hidden', key !== sectionName);
+        if (btn) {
+          btn.className = key === sectionName
+            ? 'metallic-crimson-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer'
+            : 'theme-pill-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer';
+        }
+      });
+
+      if (sectionName === 'firebase') populateFirebaseForm();
+      if (sectionName === 'brand') populateBrandForm();
+    }
+
+    function renderStatsSummary() {
+      const totalItems = PRODUCTS.length;
+      const availableItems = PRODUCTS.filter((p) => p.available !== false).length;
+      const totalCats = CATEGORIES.length;
+
+      const setNum = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = String(val);
+      };
+      setNum('statItemsCount', totalItems);
+      setNum('statAvailableCount', availableItems);
+      setNum('statCategoriesCount', totalCats);
+    }
+
+    function populateCategoryDropdowns() {
+      const prodCatSelect = document.getElementById('prodCategory');
+      const filterCatSelect = document.getElementById('adminFilterCategorySelect');
+      const selectedFilter = filterCatSelect ? filterCatSelect.value : 'all';
+
+      if (prodCatSelect) {
+        prodCatSelect.innerHTML = CATEGORIES.map((c) => {
+          const label = currentLang === 'en' ? c.nameEn : c.nameAr;
+          return `<option value="${c.id}">${label}</option>`;
+        }).join('');
+      }
+
+      if (filterCatSelect) {
+        filterCatSelect.innerHTML = `<option value="all">${tr('allCategories')}</option>` + CATEGORIES.map((c) => {
+          const label = currentLang === 'en' ? c.nameEn : c.nameAr;
+          return `<option value="${c.id}">${label}</option>`;
+        }).join('');
+        filterCatSelect.value = selectedFilter || 'all';
+      }
+    }
+
+    function resetProductForm() {
+      document.getElementById('editingProductId').value = '';
+      document.getElementById('productEditorForm').reset();
+      document.getElementById('prodAvailable').checked = true;
+      document.getElementById('productFormTitle').textContent = tr('formAddTitle');
+      document.getElementById('cancelProductEditBtn').classList.add('hidden');
+      populateCategoryDropdowns();
+    }
+
+    function startEditProduct(productId) {
+      const item = PRODUCTS.find((p) => p.id === productId);
+      if (!item) return;
+
+      document.getElementById('editingProductId').value = item.id;
+      document.getElementById('prodNameAr').value = item.nameAr || '';
+      document.getElementById('prodNameEn').value = item.nameEn || '';
+      document.getElementById('prodPrice').value = item.price || 0;
+      document.getElementById('prodCategory').value = item.category || (CATEGORIES[0]?.id || 'shawarma');
+      document.getElementById('prodBadgeAr').value = item.badgeAr || '';
+      document.getElementById('prodBadgeEn').value = item.badgeEn || '';
+      document.getElementById('prodImageUrl').value = item.image || '';
+      document.getElementById('prodAvailable').checked = item.available !== false;
+      document.getElementById('prodFeatured').checked = Boolean(item.featured);
+      document.getElementById('prodDescAr').value = item.descAr || '';
+      document.getElementById('prodDescEn').value = item.descEn || '';
+
+      document.getElementById('productFormTitle').textContent = tr('formEditTitle');
+      document.getElementById('cancelProductEditBtn').classList.remove('hidden');
+      switchAdminSection('items');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const existingId = document.getElementById('editingProductId').value.trim();
+      const nameAr = document.getElementById('prodNameAr').value.trim();
+      const nameEn = document.getElementById('prodNameEn').value.trim();
+      const id = existingId || `ms-${Date.now()}`;
+
+      const item = {
+        id,
+        nameAr,
+        nameEn,
+        price: Number(document.getElementById('prodPrice').value) || 0,
+        category: document.getElementById('prodCategory').value,
+        badgeAr: document.getElementById('prodBadgeAr').value.trim(),
+        badgeEn: document.getElementById('prodBadgeEn').value.trim(),
+        image: document.getElementById('prodImageUrl').value.trim(),
+        available: document.getElementById('prodAvailable').checked,
+        featured: document.getElementById('prodFeatured').checked,
+        descAr: document.getElementById('prodDescAr').value.trim(),
+        descEn: document.getElementById('prodDescEn').value.trim()
+      };
+
+      const idx = PRODUCTS.findIndex((p) => p.id === id);
+      if (idx >= 0) PRODUCTS[idx] = item;
+      else PRODUCTS.unshift(item);
+
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.saveProduct(item);
+      }
+
+      resetProductForm();
+      refreshAllAdminViews();
+      showAdminToast(tr('toastSavedProduct'));
+    }
+
+    async function duplicateProduct(productId) {
+      const source = PRODUCTS.find((p) => p.id === productId);
+      if (!source) return;
+      const copy = {
+        ...source,
+        id: `ms-${Date.now()}`,
+        nameAr: `${source.nameAr} (${currentLang === 'en' ? 'Copy' : 'نسخة'})`,
+        nameEn: `${source.nameEn} (Copy)`,
+        featured: false
+      };
+      PRODUCTS.unshift(copy);
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.saveProduct(copy);
+      }
+      refreshAllAdminViews();
+      showAdminToast(tr('toastDuplicated'));
+    }
+
+    async function toggleProductAvailability(productId) {
+      const item = PRODUCTS.find((p) => p.id === productId);
+      if (!item) return;
+      item.available = !(item.available !== false);
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.updateProductAvailability(item.id, item.available);
+      }
+      refreshAllAdminViews();
+      showAdminToast(tr('toastSavedProduct'));
+    }
+
+    async function deleteProduct(productId) {
+      PRODUCTS = PRODUCTS.filter((p) => p.id !== productId);
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.deleteProduct(productId);
+      }
+      refreshAllAdminViews();
+      showAdminToast(tr('toastDeletedProduct'));
+    }
+
+    function renderProductsAdminList() {
+      const container = document.getElementById('adminProductsList');
+      if (!container) return;
+
+      const query = (document.getElementById('adminSearchInput')?.value || '').trim().toLowerCase();
+      const catFilter = document.getElementById('adminFilterCategorySelect')?.value || 'all';
+
+      const filtered = PRODUCTS.filter((p) => {
+        const matchesCat = catFilter === 'all' || p.category === catFilter;
+        const textMatch = !query
+          || (p.nameAr || '').toLowerCase().includes(query)
+          || (p.nameEn || '').toLowerCase().includes(query);
+        return matchesCat && textMatch;
+      });
+
+      container.innerHTML = filtered.map((p) => {
+        const title = currentLang === 'en' ? (p.nameEn || p.nameAr) : (p.nameAr || p.nameEn);
+        const desc = currentLang === 'en' ? (p.descEn || p.descAr) : (p.descAr || p.descEn);
+        const catObj = CATEGORIES.find((c) => c.id === p.category);
+        const catLabel = catObj ? (currentLang === 'en' ? catObj.nameEn : catObj.nameAr) : p.category;
+        const isAvail = p.available !== false;
+
+        return `
+          <div class="editorial-surface rounded-2xl p-4 flex flex-col justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <span class="text-[11px] font-bold theme-accent-text">${catLabel || ''}</span>
+                  <h3 class="text-sm sm:text-base font-extrabold mt-0.5">${title}</h3>
+                </div>
+                <span class="text-sm font-extrabold tabular-nums shrink-0">${formatPrice(p.price)}</span>
+              </div>
+              <p class="text-xs theme-muted-text line-clamp-2 leading-relaxed">${desc || ''}</p>
+              <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md border theme-hairline-border ${isAvail ? 'theme-accent-text' : 'theme-muted-text'}">
+                  ${isAvail ? tr('availableBadge') : tr('unavailableBadge')}
+                </span>
+                ${p.featured ? `<span class="text-[11px] font-bold px-2 py-0.5 rounded-md border border-[#b91c28]/40 theme-accent-text">${tr('featuredBadge')}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5 pt-3 border-t theme-hairline-border">
+              <button type="button" onclick="startEditProduct('${p.id}')" class="metallic-crimson-btn px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer">${tr('btnEdit')}</button>
+              <button type="button" onclick="toggleProductAvailability('${p.id}')" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer">${tr('btnToggleAvail')}</button>
+              <button type="button" onclick="duplicateProduct('${p.id}')" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer">${tr('btnDuplicate')}</button>
+              <button type="button" onclick="deleteProduct('${p.id}')" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#dc2626] cursor-pointer">${tr('btnDelete')}</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleAddCategory(e) {
+      e.preventDefault();
+      const nameAr = document.getElementById('newCatAr').value.trim();
+      const nameEn = document.getElementById('newCatEn').value.trim();
+      const rawSlug = document.getElementById('newCatSlug').value.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-');
+      const id = rawSlug || `cat-${Date.now()}`;
+
+      const newCat = {
+        id,
+        slug: id,
+        nameAr,
+        nameEn,
+        order: CATEGORIES.length + 1
+      };
+
+      CATEGORIES.push(newCat);
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.saveCategory(newCat);
+      }
+
+      document.getElementById('addCategoryForm').reset();
+      refreshAllAdminViews();
+      showAdminToast(tr('toastAddedCat'));
+    }
+
+    async function moveCategory(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= CATEGORIES.length) return;
+      const temp = CATEGORIES[index];
+      CATEGORIES[index] = CATEGORIES[targetIndex];
+      CATEGORIES[targetIndex] = temp;
+
+      for (let i = 0; i < CATEGORIES.length; i += 1) {
+        CATEGORIES[i].order = i + 1;
+        if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+          await window.MSAdminFirebase.saveCategory(CATEGORIES[i]);
+        }
+      }
+      refreshAllAdminViews();
+    }
+
+    async function deleteCategory(catId) {
+      if (CATEGORIES.length <= 1) return;
+      CATEGORIES = CATEGORIES.filter((c) => c.id !== catId);
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.deleteCategory(catId);
+      }
+      refreshAllAdminViews();
+      showAdminToast(tr('toastDeletedCat'));
+    }
+
+    function renderCategoriesAdminList() {
+      const container = document.getElementById('adminCategoriesList');
+      if (!container) return;
+
+      container.innerHTML = CATEGORIES.map((c, idx) => {
+        const label = currentLang === 'en' ? `${c.nameEn} (${c.nameAr})` : `${c.nameAr} (${c.nameEn})`;
+        return `
+          <div class="editorial-surface rounded-xl p-4 flex items-center justify-between gap-3">
+            <div>
+              <span class="text-sm font-extrabold">${label}</span>
+              <span class="block text-xs theme-muted-text font-mono mt-0.5">${c.id}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="moveCategory(${idx}, -1)" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer">${tr('btnMoveUp')}</button>
+              <button type="button" onclick="moveCategory(${idx}, 1)" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold cursor-pointer">${tr('btnMoveDown')}</button>
+              ${CATEGORIES.length > 1 ? `<button type="button" onclick="deleteCategory('${c.id}')" class="theme-pill-btn px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#dc2626] cursor-pointer">${tr('btnDelete')}</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function populateBrandForm() {
+      const setVal = (id, v) => {
+        const el = document.getElementById(id);
+        if (el) el.value = v || '';
+      };
+      setVal('brandNameAr', STORE_SETTINGS.brandNameAr);
+      setVal('brandNameEn', STORE_SETTINGS.brandNameEn);
+      setVal('brandTaglineAr', STORE_SETTINGS.taglineAr);
+      setVal('brandTaglineEn', STORE_SETTINGS.taglineEn);
+      setVal('currencyAr', STORE_SETTINGS.currencyAr);
+      setVal('currencyEn', STORE_SETTINGS.currencyEn);
+      setVal('whatsappNumberInput', STORE_SETTINGS.whatsappNumber);
+    }
+
+    async function handleSaveBrandSettings(e) {
+      e.preventDefault();
+      STORE_SETTINGS = {
+        ...STORE_SETTINGS,
+        brandNameAr: document.getElementById('brandNameAr').value.trim(),
+        brandNameEn: document.getElementById('brandNameEn').value.trim(),
+        taglineAr: document.getElementById('brandTaglineAr').value.trim(),
+        taglineEn: document.getElementById('brandTaglineEn').value.trim(),
+        currencyAr: document.getElementById('currencyAr').value.trim(),
+        currencyEn: document.getElementById('currencyEn').value.trim(),
+        whatsappNumber: document.getElementById('whatsappNumberInput').value.trim()
+      };
+
+      if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+        await window.MSAdminFirebase.saveSettings(STORE_SETTINGS);
+      }
+
+      applyAdminLanguage();
+      showAdminToast(tr('toastBrandSaved'));
+    }
+
+    function populateFirebaseForm() {
+      const cfg = window.MSAdminFirebase ? window.MSAdminFirebase.getConfig() : UNIFIED_FIREBASE_CONFIG;
+      if (!cfg) return;
+      document.getElementById('cfgApiKey').value = cfg.apiKey || '';
+      document.getElementById('cfgAuthDomain').value = cfg.authDomain || '';
+      document.getElementById('cfgProjectId').value = cfg.projectId || '';
+      document.getElementById('cfgStorageBucket').value = cfg.storageBucket || '';
+      document.getElementById('cfgMessagingSenderId').value = cfg.messagingSenderId || '';
+      document.getElementById('cfgAppId').value = cfg.appId || '';
+      document.getElementById('cfgMeasurementId').value = cfg.measurementId || '';
+    }
+
+    function handleSaveFirebaseConfig(e) {
+      e.preventDefault();
+      const cfg = {
+        apiKey: document.getElementById('cfgApiKey').value.trim(),
+        authDomain: document.getElementById('cfgAuthDomain').value.trim(),
+        projectId: document.getElementById('cfgProjectId').value.trim(),
+        storageBucket: document.getElementById('cfgStorageBucket').value.trim(),
+        messagingSenderId: document.getElementById('cfgMessagingSenderId').value.trim(),
+        appId: document.getElementById('cfgAppId').value.trim(),
+        measurementId: document.getElementById('cfgMeasurementId').value.trim()
+      };
+      if (window.MSAdminFirebase) {
+        window.MSAdminFirebase.saveConfig(cfg);
+      }
+      applyAdminLanguage();
+      showAdminToast(tr('toastFbSaved'));
+    }
+
+    async function handleSeedDefaultData() {
+      if (!window.MSAdminFirebase || !window.MSAdminFirebase.isConnected() || !authUser) {
+        showAdminToast(tr('toastSeedNoFb'));
+        return;
+      }
+      await window.MSAdminFirebase.seedDefaults(PRODUCTS, CATEGORIES, STORE_SETTINGS);
+      showAdminToast(tr('toastSeedDone'));
+    }
+
+    function handleExportJsonBackup() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        settings: STORE_SETTINGS,
+        categories: CATEGORIES,
+        products: PRODUCTS
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ms-menu-backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showAdminToast(tr('toastExportDone'));
+    }
+
+    async function handleImportJsonBackup(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        if (data.settings) STORE_SETTINGS = { ...STORE_SETTINGS, ...data.settings };
+        if (Array.isArray(data.categories) && data.categories.length) CATEGORIES = data.categories;
+        if (Array.isArray(data.products) && data.products.length) PRODUCTS = data.products;
+
+        if (window.MSAdminFirebase && window.MSAdminFirebase.isConnected() && authUser) {
+          await window.MSAdminFirebase.seedDefaults(PRODUCTS, CATEGORIES, STORE_SETTINGS);
+        }
+
+        populateCategoryDropdowns();
+        populateBrandForm();
+        refreshAllAdminViews();
+        showAdminToast(tr('toastImportDone'));
+      } catch (err) {
+        // تجاهل
+      } finally {
+        event.target.value = '';
+      }
+    }
+
+    function refreshAllAdminViews() {
+      renderStatsSummary();
+      populateCategoryDropdowns();
+      renderProductsAdminList();
+      renderCategoriesAdminList();
+    }
+
+    window.addEventListener('ms-admin:fb-status', () => {
+      applyAdminLanguage();
+    });
+
+    window.addEventListener('ms-admin:auth', (e) => {
+      authUser = e.detail?.user || null;
+      updateAuthView();
+    });
+
+    window.addEventListener('ms-admin:menu-data', (e) => {
+      if (Array.isArray(e.detail?.items) && e.detail.items.length > 0) {
+        PRODUCTS = e.detail.items;
+        renderStatsSummary();
+        renderProductsAdminList();
+      }
+    });
+
+    window.addEventListener('ms-admin:categories-data', (e) => {
+      if (Array.isArray(e.detail?.categories) && e.detail.categories.length > 0) {
+        CATEGORIES = e.detail.categories;
+        renderStatsSummary();
+        populateCategoryDropdowns();
+        renderCategoriesAdminList();
+      }
+    });
+
+    window.addEventListener('ms-admin:settings-data', (e) => {
+      if (e.detail?.settings) {
+        STORE_SETTINGS = { ...STORE_SETTINGS, ...e.detail.settings };
+        populateBrandForm();
+        renderStatsSummary();
+        renderProductsAdminList();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyTheme(currentTheme);
+      applyAdminLanguage();
+      updateAuthView();
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+    import {
+      getFirestore,
+      collection,
+      doc,
+      setDoc,
+      updateDoc,
+      deleteDoc,
+      onSnapshot
+    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+    const FB_CONFIG_KEY = 'ms_firebase_config_v1';
+
+    const DEFAULT_FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyBW7J44fwJvC5AyiZOGOj8P97FIkTzMWYw',
+      authDomain: 'm-and-s-a17dd.firebaseapp.com',
+      projectId: 'm-and-s-a17dd',
+      storageBucket: 'm-and-s-a17dd.firebasestorage.app',
+      messagingSenderId: '660263959688',
+      appId: '1:660263959688:web:a54532b7511a771fd1333d',
+      measurementId: 'G-MDFR7JK8KZ'
+    };
+
+    function loadFirebaseConfig() {
+      try {
+        const raw = window.localStorage.getItem(FB_CONFIG_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.apiKey && parsed.projectId) {
+            // تصحيح تلقائي في حال وجود حرف O بدل رقم 0 في النسخة المخزنة مسبقاً
+            if (parsed.apiKey === 'AIzaSyBW7J44fwJvC5AyiZOGOj8P97FIkTzMWYw') {
+              parsed.apiKey = DEFAULT_FIREBASE_CONFIG.apiKey;
+              window.localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(parsed));
+            }
+            return { ...DEFAULT_FIREBASE_CONFIG, ...parsed };
+          }
+        }
+      } catch (e) {
+        // تجاهل
+      }
+      return DEFAULT_FIREBASE_CONFIG;
+    }
+
+    let appInstance = null;
+    let authInstance = null;
+    let dbInstance = null;
+    let connected = false;
+    let unsubMenu = null;
+    let unsubCats = null;
+    let unsubSettings = null;
+
+    function detachListeners() {
+      if (typeof unsubMenu === 'function') unsubMenu();
+      if (typeof unsubCats === 'function') unsubCats();
+      if (typeof unsubSettings === 'function') unsubSettings();
+      unsubMenu = null;
+      unsubCats = null;
+      unsubSettings = null;
+    }
+
+    function initFirebaseBridge(cfg) {
+      detachListeners();
+      connected = false;
+
+      if (!cfg || !cfg.apiKey || !cfg.projectId) {
+        window.dispatchEvent(new CustomEvent('ms-admin:fb-status', { detail: { connected: false } }));
+        return;
+      }
+
+      try {
+        const appName = 'ms-admin-app';
+        appInstance = getApps().some((a) => a.name === appName)
+          ? getApp(appName)
+          : initializeApp(cfg, appName);
+        authInstance = getAuth(appInstance);
+        dbInstance = getFirestore(appInstance);
+        connected = true;
+
+        window.dispatchEvent(new CustomEvent('ms-admin:fb-status', { detail: { connected: true } }));
+
+        onAuthStateChanged(authInstance, (user) => {
+          window.dispatchEvent(new CustomEvent('ms-admin:auth', { detail: { user } }));
+        });
+
+        unsubMenu = onSnapshot(collection(dbInstance, 'ms_menu'), (snap) => {
+          const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          window.dispatchEvent(new CustomEvent('ms-admin:menu-data', { detail: { items } }));
+        });
+
+        unsubCats = onSnapshot(collection(dbInstance, 'ms_categories'), (snap) => {
+          const cats = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => (a.order || 99) - (b.order || 99));
+          window.dispatchEvent(new CustomEvent('ms-admin:categories-data', { detail: { categories: cats } }));
+        });
+
+        unsubSettings = onSnapshot(doc(dbInstance, 'ms_settings', 'brand'), (snap) => {
+          if (snap.exists()) {
+            window.dispatchEvent(new CustomEvent('ms-admin:settings-data', { detail: { settings: snap.data() } }));
+          }
+        });
+      } catch (err) {
+        connected = false;
+        window.dispatchEvent(new CustomEvent('ms-admin:fb-status', { detail: { connected: false } }));
+      }
+    }
+
+    window.MSAdminFirebase = {
+      getConfig: loadFirebaseConfig,
+      isConnected: () => connected,
+      saveConfig: (cfg) => {
+        window.localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(cfg));
+        initFirebaseBridge(cfg);
+      },
+      signIn: (email, password) => signInWithEmailAndPassword(authInstance, email, password),
+      signOutUser: () => signOut(authInstance),
+      saveProduct: (item) => setDoc(doc(dbInstance, 'ms_menu', item.id), item, { merge: true }),
+      updateProductAvailability: (id, available) => updateDoc(doc(dbInstance, 'ms_menu', id), { available }),
+      deleteProduct: (id) => deleteDoc(doc(dbInstance, 'ms_menu', id)),
+      saveCategory: (cat) => setDoc(doc(dbInstance, 'ms_categories', cat.id), cat, { merge: true }),
+      deleteCategory: (id) => deleteDoc(doc(dbInstance, 'ms_categories', id)),
+      saveSettings: (settings) => setDoc(doc(dbInstance, 'ms_settings', 'brand'), settings, { merge: true }),
+      seedDefaults: async (products, categories, settings) => {
+        await setDoc(doc(dbInstance, 'ms_settings', 'brand'), settings, { merge: true });
+        for (const cat of categories) {
+          await setDoc(doc(dbInstance, 'ms_categories', cat.id), cat, { merge: true });
+        }
+        for (const item of products) {
+          await setDoc(doc(dbInstance, 'ms_menu', item.id), item, { merge: true });
+        }
+      }
+    };
+
+    initFirebaseBridge(loadFirebaseConfig());
+  </script>
+</body>
+</html>
